@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Crop Recommendation System</title>
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+   </head>
+   <style>
+		h1 {
+			color:#00796b;
+			text-align: center;
+			padding-top: 20px;
+			padding-bottom: 20px;
+		}
+
+		.warning {
+			color: red;
+			font-weight: bold;
+			text-align: center;
+		}
+		.card{
+		margin-left:410px;
+		margin-top: 20px;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		color: rgb(241, 239, 240);
+		}
+		.container{
+		justify-content: flex-end;
+		justify-items: center;
+		background:#fffbfe;
+		font-weight: bold;
+		padding-bottom:290px;
+		border-radius: 15px;
+		}
+
+		body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+}
+
+header {
+    background-color: #00796b;
+    color: white;
+    text-align: center;
+    padding: 5px 0;
+}
+
+main {
+    padding: 20px;
+}
+
+h1, h2, h3 {
+    color: #00796b;
+}
+
+.bubble-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.bubble {
+    background-color: #80deea;
+    border-radius: 50%;
+    padding: 15px;
+    width: 120px;
+    height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    font-size: 16px;
+}
+ .flow-chart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  margin: 0 auto;
+  max-width: 500px;
+  }
+  .flow-step {
+  background-color: #f4f4f4;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 15px;
+  margin: 5px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  }
+  .flow-step:not(:last-child)::after {
+  content: '↓';
+  font-size: 20px;
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  }
+footer {
+    background-color: #00796b;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+nav{
+	background-color: #00796b;
+}
+</style> 
+
+
+
+
+  <body style="background:#BCBBB8">
+  <!--=======================navbar=====================================================-->
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">Crop Recommendation System Using Machine Learning</a>
+  </div>
+  <div>
+	<a class="navbar-brand" href="#organic">Organic-fertilizer</a>
+  </div>
+</nav>
+
+<!--==========================================================================================-->
+  <div class="container my-3 mt-3">
+      <h1 class="text-success" >Crop Recommendation System<span class="text-success">🌱</span></h1>
+
+<!--      adding form-->
+      <form action="/predict" method="POST">
+          <div class="row">
+              <div class="col-md-4">
+					<label for="Nitrogen">Nitrogen</label>
+					<input type="number" id="Nitrogen" name="Nitrogen" placeholder="Enter Nitrogen" class="form-control" required step="0">
+				</div>
+               <div class="col-md-4">
+					<label for="Phosporus">Phosphorus</label>
+					<input type="number" id="Phosporus" name="Phosporus" placeholder="Enter Phosphorus" class="form-control" required step="00">
+				</div>
+				<div class="col-md-4">
+					<label for="Potassium">Potassium</label>
+					<input type="number" id="Potassium" name="Potassium" placeholder="Enter Potassium" class="form-control" required step="0">
+				</div>
+          </div>
+
+          <div class="row mt-4">
+				<div class="col-md-4">
+					<label for="Temperature">Temperature</label>
+					<input type="number" step="0.01" id="Temperature" name="Temperature" placeholder="Enter Temperature in °C" class="form-control" required step="0">
+				</div>
+				<div class="col-md-4">
+					<label for="Humidity">Humidity</label>
+					<input type="number" step="0.01" id="Humidity" name="Humidity" placeholder="Enter Humidity in %" class="form-control" required step="0">
+				</div>
+				<div class="col-md-4">
+					<label for="pH">pH</label>
+					<input type="number" step="0.01" id="pH" name="pH" placeholder="Enter pH value" class="form-control" required step="0">
+				</div>
+			</div>
+
+          <div class="row mt-4">
+				<div class="col-md-4">
+					<label for="Rainfall">Rainfall</label>
+					<input type="number" step="0.01" id="Rainfall" name="Rainfall" placeholder="Enter Rainfall in mm" class="form-control" required>
+				</div>
+			</div>
+
+
+
+           <div class="row mt-4">
+
+           <div class="col-md-12 text-center">
+				<button type="submit" class="btn btn-primary btn-lg">Get Recommendation</button>
+			</div>
+			</div>
+      </form>
+
+       {% if result %}
+		<div class="card bg-dark" style="width: 18rem;">
+		  <img src="{{url_for('static', filename='crop.png')}}" style="width: 70px; height: 70px;" class="card-img-top" alt="...">
+		  <div class="card-body">
+			<h5 class="card-title">Recommend Crop for Cultivation is:</h5>
+			<p class="card-text">{{ result }} </p>
+		  </div>
+		</div>
+	   {% endif %}
+  </div>
+  <div id="organic">
+	<header>
+        <h1 style="color: white;">Organic Fertilizer Preparation</h1>
+		<p>This section provides a detailed method to prepare organic fertilizer for various crops, ensuring sustainable and eco-friendly farming practices.</p>
+    </header>
+    <main>
+        <section id="organic-fertilizer">
+            <h3>Ingredients</h3>
+            <div class="bubble-container">
+                <div class="bubble">Cow dung: 5 kg</div>
+                <div class="bubble">Cow urine: 3 liters</div>
+                <div class="bubble">Cow milk: 2 liters</div>
+                <div class="bubble">Cow curd: 2 liters</div>
+                <div class="bubble">Cow ghee: 1 kg</div>
+                <div class="bubble">Yellow bananas: 1 dozen</div>
+                <div class="bubble">Tender coconut water: 3 liters</div>
+                <div class="bubble">Sugarcane juice: 3 liters</div>
+            </div>
+            
+            <h3>Steps to Prepare Organic Fertilizer</h3>
+            <div class="flow-chart">
+                <div class="flow-step">1. Mix cow dung with water and let it sit for a few hours.</div>
+                <div class="flow-step">2. Add cow urine, milk, curd, ghee, bananas, coconut water, and sugarcane juice.</div>
+                <div class="flow-step">3. Cover and ferment for 21 days, stirring twice daily.</div>
+                <div class="flow-step">4. Strain the mixture using a cotton cloth.</div>
+                <div class="flow-step">5. Dilute with water (30:1) to use as a liquid fertilizer.</div>
+                <div class="flow-step">6. Apply as foliar spray or soil drench during the growing season.</div>
+            </div>
+            <p>Incorporating organic fertilizer can significantly improve crop yield and quality, promoting sustainable agricultural practices.</p>
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy; 2024 Crop Recommendation System</p>
+    </footer>
+  </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+  </body>
+</html>
